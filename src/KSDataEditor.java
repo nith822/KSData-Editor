@@ -19,13 +19,11 @@ public class KSDataEditor {
 	ArrayList<Integer> userKanjiCode;
 	ArrayList<String> inputLines;
 	
+	//args[0] ksdataFilePath 
+	//args[1] inputFilePath
     public static void main(String[] args) throws Exception {
         Class.forName("org.sqlite.JDBC");
-        //ksdata file
-        File f = new File("C:/Users/Harvey/Desktop/sql/Backup-20170311132053-1.8.22.ksdata");
-        //input file
-        File x = new File("C:/Users/Harvey/Desktop/SubaHibi Sentences/SubaHibi 1.txt");
-        KSDataEditor test = new KSDataEditor(f.getPath(), x.getPath());
+        KSDataEditor test = new KSDataEditor(args[0], args[1]);
         test.updateNotes();
         test.conn.close();
     }
@@ -78,7 +76,6 @@ public class KSDataEditor {
     			inputLines.add(line);
     		}
     	}
-    	System.out.println(inputLines.toString());
     	reader.close();
     }
     
