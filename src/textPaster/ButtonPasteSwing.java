@@ -1,3 +1,4 @@
+package textPaster;
 
 import java.io.*;
 import javax.swing.*;
