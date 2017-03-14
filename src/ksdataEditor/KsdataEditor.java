@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
 
 public class KsdataEditor {
 	
+	protected boolean addKnown;
 
 	protected Connection conn;
 	protected File ksdata;
@@ -33,12 +34,13 @@ public class KsdataEditor {
 	//args[1] inputFilePath
     public static void main(String[] args) throws Exception {
         Class.forName("org.sqlite.JDBC");
-        KsdataEditor test = new KsdataEditor(args[0], args[1]);
+        KsdataEditor test = new KsdataEditor(args[0], args[1], Boolean.parseBoolean(args[2]));
         test.ge.updateNotes();
         test.conn.close();
     }
     
-    public KsdataEditor(String ksdataPath, String inputFile) throws SQLException, IOException {
+    public KsdataEditor(String ksdataPath, String inputFile, boolean addKnown) throws SQLException, IOException {
+    	this.addKnown = addKnown;
     	this.ksdata = new File(ksdataPath);
     	this.inputFile = new File(inputFile);
     	conn = DriverManager.getConnection("jdbc:sqlite:" + ksdata.getPath());
@@ -85,7 +87,7 @@ public class KsdataEditor {
         }
         rs.close();
     	Collections.sort(userKanjiCode);
-    	System.out.println(userKanjiCode.toString());
+    	//System.out.println(userKanjiCode.toString());
     }
     
     public void scanInputLines() throws IOException {

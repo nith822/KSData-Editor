@@ -16,7 +16,13 @@ public class GroupEditor {
     	for(String line : editor.inputLines) {
     		for(Character c: line.toCharArray()) {
     			if(isKanji(c)) {
-    				addToGroup(c);
+    				if(editor.addKnown) {
+    					addToGroup(c);
+    				} else {
+    					if(!(Collections.binarySearch(editor.userKanjiCode, (int)c) >= 0)) {
+        					addToGroup(c);
+    					}
+    				}
     				int arrayListIndex;
     				if((arrayListIndex = Collections.binarySearch(editor.userKanjiCode, (int)c)) >= 0) {
     					int kanji_code = editor.userKanjiCode.get(arrayListIndex);
@@ -74,7 +80,7 @@ public class GroupEditor {
     		pstmt.executeUpdate();
     		pstmt.close();
     	}	catch (SQLException e) {
-    		System.out.println(c + "::" + (int)c);
+    		//System.out.println(c + "::" + (int)c);
     	}	finally {
     		if (pstmt != null) pstmt.close();
     	}
