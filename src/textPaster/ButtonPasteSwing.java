@@ -20,12 +20,17 @@ implements ActionListener, KeyListener, WindowListener{
 	private int linesAdded;
 	private int charsAdded;
 	
-	//args[0] destination file to Paste to
+	private static final String DEFAULT_CHARACTER_ENCODING = "ASCII";
+	
 	public static void main(String[] args) {
-		new ButtonPasteSwing(args[0]).setVisible(true);
+		if(args.length == 2) {
+			new ButtonPasteSwing(args[0], args[1]).setVisible(true);
+		} else {
+			new ButtonPasteSwing(args[0], DEFAULT_CHARACTER_ENCODING).setVisible(true);
+		}
 	}
 
-	public ButtonPasteSwing(String file) {
+	public ButtonPasteSwing(String file, String encoding) {
 		super("Text Paster");
 		add(pasteButton = new JButton("Paste to File"), "North");
 		add(ta = new JTextArea(), "Center");
@@ -41,7 +46,9 @@ implements ActionListener, KeyListener, WindowListener{
 		pasteButton.requestFocusInWindow();
 		clipboard = getToolkit().getSystemClipboard();
 		try {
-			out = new BufferedWriter(new FileWriter(file, true));
+			//out = new BufferedWriter(new FileWriter(file, true));
+			out = new BufferedWriter(new OutputStreamWriter(
+				    new FileOutputStream(file, true), encoding));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

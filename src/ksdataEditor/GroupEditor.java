@@ -75,15 +75,17 @@ public class GroupEditor {
     				"INSERT INTO groups_link" + " " +
     				"VALUES(?,?,0)");
 
-    		pstmt.setInt(1, editor.groupsLinkId);
+    		pstmt.setInt(1, editor.groupsId);
     		pstmt.setInt(2, (int)c);
     		pstmt.executeUpdate();
     		pstmt.close();
     	}	catch (SQLException e) {
     		//System.out.println(c + "::" + (int)c);
     	}	finally {
+    		System.out.println("Add:: " + c);
     		if (pstmt != null) pstmt.close();
     	}
+    	
     }
     
 

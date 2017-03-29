@@ -17,7 +17,7 @@ public class KsdataEditor {
 
 	protected Connection conn;
 	protected File ksdata;
-	protected File inputFile;
+	public File inputFile;
 	
 	protected int groupingsId;
 	protected int groupsId;
@@ -30,16 +30,27 @@ public class KsdataEditor {
 	private GroupCreator gc;
 	private GroupEditor ge;
 	
+	private String encoding;
+
+	private static final String DEFAULT_CHARACTER_ENCODING = "ASCII";
+	
 	//args[0] ksdataFilePath 
 	//args[1] inputFilePath
     public static void main(String[] args) throws Exception {
         Class.forName("org.sqlite.JDBC");
-        KsdataEditor test = new KsdataEditor(args[0], args[1], Boolean.parseBoolean(args[2]));
+        KsdataEditor test;
+        if(args.length == 4) {
+        	test = new KsdataEditor(args[0], args[1], Boolean.parseBoolean(args[2]), args[3]);
+        } else {
+        	test = new KsdataEditor(args[0], args[1], Boolean.parseBoolean(args[2]), DEFAULT_CHARACTER_ENCODING);
+        }
         test.ge.updateNotes();
+        System.out.println("Created Group:: " + test.inputFile.getName());
         test.conn.close();
     }
     
-    public KsdataEditor(String ksdataPath, String inputFile, boolean addKnown) throws SQLException, IOException {
+    public KsdataEditor(String ksdataPath, String inputFile, boolean addKnown, String encoding) throws SQLException, IOException {
+    	this.encoding = encoding;
     	this.addKnown = addKnown;
     	this.ksdata = new File(ksdataPath);
     	this.inputFile = new File(inputFile);
@@ -87,15 +98,15 @@ public class KsdataEditor {
         }
         rs.close();
     	Collections.sort(userKanjiCode);
-    	//System.out.println(userKanjiCode.toString());
     }
     
     public void scanInputLines() throws IOException {
     	inputLines = new ArrayList<String>();
-    	BufferedReader reader = new BufferedReader( new InputStreamReader(new FileInputStream(inputFile), "UTF8"));
+    	BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(inputFile), encoding));
     	String line;
     	while((line = reader.readLine()) != null) {
     		if(!line.isEmpty()) {
+    			System.out.println(line);
     			inputLines.add(line);
     		}
     	}
