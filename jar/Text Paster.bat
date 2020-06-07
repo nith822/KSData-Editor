@@ -1,0 +1,1 @@
+start javaw -jar "Text Paster.jar" "C:\\Users\\Harvey\\Desktop\\SubaHibi Sentences\\SubaHibi 1.txt"
